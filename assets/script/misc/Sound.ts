@@ -6,8 +6,8 @@
 // TODO: 단독 모듈로 export
 
 export enum AudioState {
-    Off = 'off', // Mute
-    On = 'on',
+    Off = "off", // Mute
+    On = "on",
 }
 
 export enum MainVolumeState {
@@ -15,11 +15,11 @@ export enum MainVolumeState {
     Max = 1,
 }
 
-export const soundPath = 'audio/';
+export const soundPath = "audio/";
 
-const mainVolume: string = 'mainVolume';
-const bgmVolume: string = 'bgmVolume';
-const audio: string = 'audio';
+const mainVolume: string = "mainVolume";
+const bgmVolume: string = "bgmVolume";
+const audio: string = "audio";
 
 const defaultBgmVolume = 0.5;
 
@@ -27,14 +27,14 @@ const playingList = new Set<number>();
 
 let bgmClip: cc.AudioClip = null;
 let bgmId: number = 0;
-let bgmName: string = '';
+let bgmName: string = "";
 
 function isMute(): boolean {
     let volume = cc.sys.localStorage.getItem(mainVolume);
     if (!volume) {
         volume = cc.sys.localStorage.setItem(mainVolume, defaultBgmVolume);
     }
-    let isOff = (AudioState.Off === cc.sys.localStorage.getItem(audio))
+    const isOff = AudioState.Off === cc.sys.localStorage.getItem(audio);
     if (volume <= 0 || isOff) {
         return true;
     }
@@ -59,7 +59,7 @@ export function playSoundFromClip(clip: cc.AudioClip): number {
 }
 
 function playSound(clip: cc.AudioClip): number {
-    let id = cc.audioEngine.play(clip, false, getVolume());
+    const id = cc.audioEngine.play(clip, false, getVolume());
     playingList.add(id);
     cc.audioEngine.setFinishCallback(id, () => {
         playingList.delete(id);
@@ -67,7 +67,7 @@ function playSound(clip: cc.AudioClip): number {
     return id;
 }
 
-export function playBgm(clipName: string = '') {
+export function playBgm(clipName: string = "") {
     if (clipName) {
         bgmName = clipName;
     }
@@ -82,7 +82,7 @@ export function playBgm(clipName: string = '') {
     }
 
     if (!bgmName) {
-        cc.log('bgm name undefined');
+        cc.log("bgm name undefined");
         return;
     }
 
@@ -97,7 +97,7 @@ export function stopBgm() {
     cc.audioEngine.stopMusic();
     bgmClip = null;
     bgmId = 0;
-    bgmName = '';
+    bgmName = "";
 }
 
 export function audioActive(active: AudioState) {
@@ -114,13 +114,13 @@ export function setVolumeBgm(volume: number) {
 
 export function setVolume(volume: number) {
     cc.sys.localStorage.setItem(mainVolume, volume);
-    playingList.forEach(id => {
+    playingList.forEach((id) => {
         cc.audioEngine.setVolume(id, volume);
     });
 }
 
 export function getVolume() {
-    let volume = cc.sys.localStorage.getItem(mainVolume);
+    const volume = cc.sys.localStorage.getItem(mainVolume);
     return volume;
 }
 
@@ -135,12 +135,12 @@ export function getVolume() {
  * ```
  */
 export function preloadDir(targetDir: string) {
-    cc.loader.loadResDir(soundPath + targetDir, cc.AudioClip, function (err, clips: cc.AudioClip[]) {
-        cc.log('preload sound list');
-        clips.forEach(clip => {
+    cc.loader.loadResDir(soundPath + targetDir, cc.AudioClip, (err, clips: cc.AudioClip[]) => {
+        cc.log("preload sound list");
+        clips.forEach((clip) => {
             cc.log(clip.name);
         });
-        cc.log('completed preload sound dir', targetDir);
+        cc.log("completed preload sound dir", targetDir);
     });
 }
 
@@ -155,8 +155,8 @@ export function preloadDir(targetDir: string) {
  * ```
  */
 export function preloadFile(targetFile: string) {
-    cc.loader.loadRes(soundPath + targetFile, cc.AudioClip, function (err, clip: cc.AudioClip) {
-        cc.log('completed preload sound file', clip.name);
+    cc.loader.loadRes(soundPath + targetFile, cc.AudioClip, (err, clip: cc.AudioClip) => {
+        cc.log("completed preload sound file", clip.name);
     });
 }
 
@@ -171,9 +171,9 @@ export function preloadFile(targetFile: string) {
  * ```
  */
 export function unloadDir(targetDir: string) {
-    //cc.loader.releaseResDir(soundPath + targetDir);
+    // cc.loader.releaseResDir(soundPath + targetDir);
     cc.loader.releaseResDir();
-    cc.log('completed release sound dir', targetDir);
+    cc.log("completed release sound dir", targetDir);
 }
 
 /**
@@ -188,5 +188,5 @@ export function unloadDir(targetDir: string) {
  */
 export function unloadFile(targetFile: string) {
     cc.loader.releaseRes(soundPath + targetFile);
-    cc.log('completed release sound file', targetFile);
+    cc.log("completed release sound file", targetFile);
 }

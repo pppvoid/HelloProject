@@ -1,7 +1,7 @@
-import Popup from './Popup';
-import { playSoundClip } from '../misc/Sound';
-import { PopupStrings } from './PopupStrings';
-import { Event } from '../misc/Event';
+import Popup from "./Popup";
+import { playSoundClip } from "../misc/Sound";
+import { PopupStrings } from "./PopupStrings";
+import { Event } from "../misc/Event";
 
 const { ccclass, property } = cc._decorator;
 
@@ -9,34 +9,32 @@ const { ccclass, property } = cc._decorator;
 export default class MessagePopup extends Popup {
     _leftBtn: cc.Button;
     get leftBtn(): cc.Button {
-        return this._leftBtn || (this._leftBtn = this.node.getChildByName('LeftButton').getComponent<cc.Button>(cc.Button));
+        return this._leftBtn || (this._leftBtn = this.node.getChildByName("LeftButton").getComponent<cc.Button>(cc.Button));
     }
 
     _leftText: cc.Label;
     get leftText(): cc.Label {
-        return this._leftText || (this._leftText = this.leftBtn.node.getChildByName('Label').getComponent<cc.Label>(cc.Label));
+        return this._leftText || (this._leftText = this.leftBtn.node.getChildByName("Label").getComponent<cc.Label>(cc.Label));
     }
 
     _rightBtn: cc.Button;
     get rightBtn(): cc.Button {
-        return this._rightBtn || (this._rightBtn = this.node.getChildByName('RightButton').getComponent<cc.Button>(cc.Button));
+        return this._rightBtn || (this._rightBtn = this.node.getChildByName("RightButton").getComponent<cc.Button>(cc.Button));
     }
 
     _rightText: cc.Label;
     get rightText(): cc.Label {
-        return this._rightText || (this._rightText = this.rightBtn.node.getChildByName('Label').getComponent<cc.Label>(cc.Label));
+        return this._rightText || (this._rightText = this.rightBtn.node.getChildByName("Label").getComponent<cc.Label>(cc.Label));
     }
 
-    clickLeftCallback: Function = null;
-    clickRightCallback: Function = null;
+    clickLeftCallback: () => void = null;
+    clickRightCallback: () => void = null;
 
     onLoad() {
         this.eventInstructor();
     }
 
-    eventInstructor() {
-        
-    }
+    eventInstructor() {}
 
     show(isShow: boolean) {
         this.node.active = isShow;
@@ -47,7 +45,7 @@ export default class MessagePopup extends Popup {
             this.clickLeftCallback();
         }
 
-        playSoundClip('c_btn');
+        playSoundClip("c_btn");
         this.Close();
     }
 
@@ -56,7 +54,7 @@ export default class MessagePopup extends Popup {
             this.clickRightCallback();
         }
 
-        playSoundClip('c_btn');
+        playSoundClip("c_btn");
         this.Close();
     }
 
@@ -66,8 +64,8 @@ export default class MessagePopup extends Popup {
         this.leftBtn.node.active = true;
 
         if (buttonCount === 1) {
-            let posx = this.rightBtn.node.x - this.leftBtn.node.x;
-            let pos = this.leftBtn.node.getPosition();
+            const posx = this.rightBtn.node.x - this.leftBtn.node.x;
+            const pos = this.leftBtn.node.getPosition();
             pos.x += posx / 2;
             this.leftBtn.node.setPosition(pos);
         } else {

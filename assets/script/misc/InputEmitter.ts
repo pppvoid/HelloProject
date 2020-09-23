@@ -1,6 +1,6 @@
 import { Strings } from "./Strings";
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 export interface InputListener {
     onInput(event: cc.Event);
@@ -18,7 +18,7 @@ function forceCast<T>(input: any): T {
 export default class InputEmitter extends cc.Component {
     listeners = new Array<InputListener>();
 
-    onLoad () {
+    onLoad() {
         this.node.on(Strings.Input.mousedown, (event) => this.emit(event));
         this.node.on(Strings.Input.mouseup, (event) => this.emit(event));
         this.node.on(Strings.Input.mouseenter, (event) => this.emit(event));
@@ -35,8 +35,8 @@ export default class InputEmitter extends cc.Component {
     }
 
     collectListener() {
-        let components = this.node.getComponentsInChildren<cc.Component>(cc.Component);
-        components.forEach(com => {
+        const components = this.node.getComponentsInChildren<cc.Component>(cc.Component);
+        components.forEach((com) => {
             if (isInputListener(com)) {
                 this.listeners.push(forceCast<InputListener>(com));
             }
@@ -44,8 +44,8 @@ export default class InputEmitter extends cc.Component {
     }
 
     emit(event: cc.Event) {
-        this.listeners.forEach(listener => {
+        this.listeners.forEach((listener) => {
             listener.onInput(event);
-        });    
+        });
     }
 }

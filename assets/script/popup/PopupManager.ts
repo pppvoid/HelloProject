@@ -1,5 +1,5 @@
-import Popup from './Popup';
-import { PopupStrings } from './PopupStrings';
+import Popup from "./Popup";
+import { PopupStrings } from "./PopupStrings";
 
 const { ccclass, property } = cc._decorator;
 
@@ -19,15 +19,15 @@ export default class PopupManager extends cc.Component {
     }
 
     public static AddOpen<T extends Popup>(popupType: { new (): T }): T {
-        let newNode = new cc.Node();
-        let touchBlockChild = new cc.Node();
+        const newNode = new cc.Node();
+        const touchBlockChild = new cc.Node();
         touchBlockChild.width = cc.Canvas.instance.designResolution.width;
         touchBlockChild.height = cc.Canvas.instance.designResolution.height;
         touchBlockChild.addComponent(cc.BlockInputEvents);
         newNode.addChild(touchBlockChild);
 
         this.manager.node.addChild(newNode);
-        let popup = newNode.addComponent(popupType);
+        const popup = newNode.addComponent(popupType);
         popup.Open();
         PopupManager.manager.popups.push(popup);
         return popup;
@@ -44,23 +44,23 @@ export default class PopupManager extends cc.Component {
     }
 
     public static Clear() {
-        this.manager.popups.forEach(p => {
+        this.manager.popups.forEach((p) => {
             p.Close();
         });
         this.manager.popups = new Array<Popup>();
     }
 
     public static Remove(find: Popup) {
-        const index = this.manager.popups.findIndex(p => p === find);
+        const index = this.manager.popups.findIndex((p) => p === find);
         if (-1 === index) {
-            cc.warn('can not find and remove ', find.popupName);
+            cc.warn("can not find and remove ", find.popupName);
             return;
         }
         this.manager.popups.splice(index, 1);
     }
 
     public static GetPopup(popupName: string): Popup {
-        return this.manager.popups.find(e => e.popupName === popupName);
+        return this.manager.popups.find((e) => e.popupName === popupName);
     }
 
     // static isExist(key: string): boolean {
@@ -69,7 +69,7 @@ export default class PopupManager extends cc.Component {
     // }
 
     loadAsync(popupName: string, key: string): Promise<Popup> {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             // if (key.length > 0) {
             //     if (PopupManager.isExist(key)) {
             //         return resolve(null);
@@ -78,7 +78,7 @@ export default class PopupManager extends cc.Component {
 
             cc.loader.loadRes(PopupStrings.prefabsPath + popupName, (err, prefab) => {
                 if (err) {
-                    cc.error('Failed to load popup: ' + popupName);
+                    cc.error("Failed to load popup: " + popupName);
                     cc.error(err);
                     resolve(null);
                 }

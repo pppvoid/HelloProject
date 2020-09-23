@@ -30,7 +30,7 @@ export default class RemainTimer extends cc.Component {
     }
 
     update() {
-        let remain = Math.floor(this.endTime - Date.now());
+        const remain = Math.floor(this.endTime - Date.now());
         if (remain <= 0) {
             if (this.onEnd) {
                 this.onEnd();
@@ -68,4 +68,3 @@ export default class RemainTimer extends cc.Component {
         return this.enabled;
     }
 }
-
